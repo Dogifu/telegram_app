@@ -20,40 +20,44 @@
 
         .container {
             text-align: center;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         h1 {
-            font-size: 3em;
+            font-size: 2em;
             margin-bottom: 20px;
             font-weight: bold;
             color: #ffcc00;
         }
 
         .roulette-container {
-            width: 90%; /* Сделаем рулетку адаптивной */
-            max-width: 800px;
-            height: 200px;
+            width: 90%;
+            height: 150px;
             overflow: hidden;
             position: relative;
-            border-radius: 15px;
             margin-top: 20px;
+            border-radius: 15px;
             box-shadow: 0 0 20px rgba(255, 204, 0, 0.7);
         }
 
         .roulette {
             display: flex;
-            transition: transform 2s ease-in-out;
+            width: 100%;
+            height: 100%;
+            transition: transform 3s ease-in-out;
         }
 
         .gift {
-            width: 200px;
+            width: 100px; /* Элемент рулетки фиксированной ширины */
             height: 100%;
             background-color: #ff5733;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5em;
+            font-size: 1.2em;
             border-radius: 10px;
             margin-right: 20px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
@@ -75,7 +79,6 @@
             background-color: #ff9900;
         }
 
-        /* Стрелочка для указания выигрыша */
         .arrow {
             position: absolute;
             top: -30px;
@@ -83,9 +86,9 @@
             transform: translateX(-50%);
             font-size: 2em;
             color: #ffcc00;
+            display: none; /* Стрелочка скрыта изначально */
         }
 
-        /* Стили для анимации стрелочки */
         @keyframes bounce {
             0% { transform: translateX(-50%) translateY(0); }
             50% { transform: translateX(-50%) translateY(-10px); }
@@ -95,6 +98,7 @@
         .arrow-bounce {
             animation: bounce 1s infinite;
         }
+
     </style>
 </head>
 <body>
@@ -102,6 +106,7 @@
         <h1>🎰 Рулетка Призов</h1>
         <div class="roulette-container">
             <div class="roulette">
+                <!-- Вставляем 36 подарков для эффекта множества -->
                 <div class="gift">🎁 Подарок 1</div>
                 <div class="gift">🎉 Подарок 2</div>
                 <div class="gift">🍫 Подарок 3</div>
@@ -110,6 +115,34 @@
                 <div class="gift">🍭 Подарок 6</div>
                 <div class="gift">💎 Подарок 7</div>
                 <div class="gift">🎁 Подарок 8</div>
+                <div class="gift">🎉 Подарок 9</div>
+                <div class="gift">🍫 Подарок 10</div>
+                <div class="gift">🧸 Подарок 11</div>
+                <div class="gift">📱 Подарок 12</div>
+                <div class="gift">🍭 Подарок 13</div>
+                <div class="gift">💎 Подарок 14</div>
+                <div class="gift">🎁 Подарок 15</div>
+                <div class="gift">🎉 Подарок 16</div>
+                <div class="gift">🍫 Подарок 17</div>
+                <div class="gift">🧸 Подарок 18</div>
+                <div class="gift">📱 Подарок 19</div>
+                <div class="gift">🍭 Подарок 20</div>
+                <div class="gift">💎 Подарок 21</div>
+                <div class="gift">🎁 Подарок 22</div>
+                <div class="gift">🎉 Подарок 23</div>
+                <div class="gift">🍫 Подарок 24</div>
+                <div class="gift">🧸 Подарок 25</div>
+                <div class="gift">📱 Подарок 26</div>
+                <div class="gift">🍭 Подарок 27</div>
+                <div class="gift">💎 Подарок 28</div>
+                <div class="gift">🎁 Подарок 29</div>
+                <div class="gift">🎉 Подарок 30</div>
+                <div class="gift">🍫 Подарок 31</div>
+                <div class="gift">🧸 Подарок 32</div>
+                <div class="gift">📱 Подарок 33</div>
+                <div class="gift">🍭 Подарок 34</div>
+                <div class="gift">💎 Подарок 35</div>
+                <div class="gift">🎁 Подарок 36</div>
             </div>
             <div class="arrow" id="arrow">↑</div>
         </div>
@@ -128,20 +161,21 @@
             // Скрываем стрелочку до начала анимации
             arrow.style.display = 'none';
 
-            // Генерируем случайную позицию для прокрутки
-            const randomPosition = Math.floor(Math.random() * 4) * 200; // случайный сдвиг
+            // Генерируем случайное количество прокруток, чтобы имитировать длительную прокрутку
+            const spins = Math.floor(Math.random() * 8) + 3; // Прокрутка от 3 до 10 циклов
+            const randomPosition = Math.floor(Math.random() * 36) * 100; // случайный сдвиг (36 элементов)
 
-            // Начинаем анимацию сдвига рулетки
-            document.querySelector('.roulette').style.transition = 'transform 2s ease-in-out';
-            document.querySelector('.roulette').style.transform = `translateX(-${randomPosition}px)`;
+            // Начинаем анимацию прокрутки рулетки
+            document.querySelector('.roulette').style.transition = 'transform 3s ease-in-out';
+            document.querySelector('.roulette').style.transform = `translateX(-${randomPosition + (spins * 100)}px)`; // Добавляем дополнительные вращения
 
             // Рассчитываем, какой подарок будет в центре
-            lastIndex = (randomPosition / 200) % 8;
+            lastIndex = (randomPosition / 100) % 36; // Индекс выигравшего подарка
 
             setTimeout(() => {
                 // Показываем стрелочку поверх рулетки на выигравшем подарке
                 arrow.style.display = 'block';
-                arrow.style.left = `${(lastIndex * 200) + 100}px`; // Позиционируем стрелочку
+                arrow.style.left = `${(lastIndex * 100) + 50}px`; // Позиционируем стрелочку по центру
 
                 // Добавляем анимацию для стрелочки
                 arrow.classList.add('arrow-bounce');
@@ -155,12 +189,11 @@
                     document.querySelector('.roulette').style.transition = 'none';
                     document.querySelector('.roulette').style.transform = 'translateX(0)';
                     setTimeout(() => {
-                        document.querySelector('.roulette').style.transition = 'transform 2s ease-in-out';
+                        document.querySelector('.roulette').style.transition = 'transform 3s ease-in-out';
                     }, 100);
                 }, 500); // Ждем, чтобы завершилась анимация и только потом показываем результат
-            }, 2000);  // Время, через которое рулетка остановится
+            }, 3000);  // Время, через которое рулетка остановится
         }
     </script>
 </body>
 </html>
-
