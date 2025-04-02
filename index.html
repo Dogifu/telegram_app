@@ -7,44 +7,43 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            background-color: #000; /* Черный фон на всю страницу */
+            color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
         }
-        .wheel-container {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 10px solid #FF5733;
-            position: relative;
+
+        .roulette-container {
+            width: 80%;
+            height: 150px;
             overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
-        .wheel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+
+        .roulette {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            transform-origin: center center;
-            transition: transform 3s ease-out;
+            transition: transform 2s ease-in-out;
+            width: 200%; /* Увеличиваем ширину для плавного прокручивания */
         }
+
         .gift {
-            width: 80px;
-            height: 80px;
-            background-color: #ffcc00;
+            width: 200px;
+            height: 150px;
+            background-color: #FF5733;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 24px;
             border-radius: 10px;
-            font-size: 16px;
-            position: absolute;
+            margin-right: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         }
+
         .spin-btn {
             margin-top: 20px;
             background-color: #FF5733;
@@ -55,46 +54,39 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .spin-btn:hover {
             background-color: #ff4500;
         }
     </style>
 </head>
 <body>
-    <div class="wheel-container">
-        <div class="wheel">
-            <div class="gift" style="transform: rotate(0deg);">🎁 Подарок 1</div>
-            <div class="gift" style="transform: rotate(45deg);">🎉 Подарок 2</div>
-            <div class="gift" style="transform: rotate(90deg);">🍫 Подарок 3</div>
-            <div class="gift" style="transform: rotate(135deg);">🧸 Подарок 4</div>
-            <div class="gift" style="transform: rotate(180deg);">📱 Подарок 5</div>
-            <div class="gift" style="transform: rotate(225deg);">🍭 Подарок 6</div>
-            <div class="gift" style="transform: rotate(270deg);">💎 Подарок 7</div>
-            <div class="gift" style="transform: rotate(315deg);">🎁 Подарок 8</div>
+    <div>
+        <div class="roulette-container">
+            <div class="roulette">
+                <div class="gift">🎁 Подарок 1</div>
+                <div class="gift">🎉 Подарок 2</div>
+                <div class="gift">🍫 Подарок 3</div>
+                <div class="gift">🧸 Подарок 4</div>
+                <div class="gift">📱 Подарок 5</div>
+                <div class="gift">🍭 Подарок 6</div>
+                <div class="gift">💎 Подарок 7</div>
+                <div class="gift">🎁 Подарок 8</div>
+            </div>
         </div>
+        <button class="spin-btn" id="spinBtn">Крутить рулетку</button>
     </div>
-    <button class="spin-btn" id="spinBtn">Крутить рулетку</button>
 
     <script>
-        document.getElementById("spinBtn").addEventListener("click", function() {
-            const wheel = document.querySelector(".wheel");
-            const randomDeg = Math.floor(Math.random() * 360) + 3600;  // random degree (at least 10 full turns)
-            wheel.style.transform = `rotate(${randomDeg}deg)`;  // Apply rotation
+        const spinButton = document.getElementById('spinBtn');
+        const roulette = document.querySelector('.roulette');
 
-            setTimeout(() => {
-                const prizeIndex = Math.floor(randomDeg / 45) % 8;  // Determine which prize
-                const prizes = [
-                    "🎁 Подарок 1",
-                    "🎉 Подарок 2",
-                    "🍫 Подарок 3",
-                    "🧸 Подарок 4",
-                    "📱 Подарок 5",
-                    "🍭 Подарок 6",
-                    "💎 Подарок 7",
-                    "🎁 Подарок 8"
-                ];
-                alert("Поздравляем! Вы выиграли: " + prizes[prizeIndex]);
-            }, 3500);  // Wait for animation to finish
+        spinButton.addEventListener('click', function() {
+            // Генерируем случайную позицию для прокрутки
+            const randomPosition = Math.floor(Math.random() * 4) * 200; // генерируем случайный сдвиг
+
+            // Добавляем класс для анимации прокрутки
+            roulette.style.transform = `translateX(-${randomPosition}px)`;
         });
     </script>
 </body>
