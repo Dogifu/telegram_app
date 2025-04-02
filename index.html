@@ -3,65 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎰 Рулетка подарков 🎁</title>
+    <title>🎰 Рулетка Призов</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #000; /* Черный фон на всю страницу */
-            color: white;
+            background-color: #2b2b2b;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             flex-direction: column;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #ffcc00;
         }
 
         .roulette-container {
-            width: 80%;
-            height: 150px;
+            width: 90%; /* Сделаем рулетку адаптивной */
+            max-width: 800px;
+            height: 200px;
             overflow: hidden;
             position: relative;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.7);
         }
 
         .roulette {
             display: flex;
             transition: transform 2s ease-in-out;
-            width: 200%; /* Увеличиваем ширину для плавного прокручивания */
         }
 
         .gift {
             width: 200px;
-            height: 150px;
-            background-color: #FF5733;
+            height: 100%;
+            background-color: #ff5733;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 24px;
+            font-size: 1.5em;
             border-radius: 10px;
             margin-right: 20px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
         }
 
-        .spin-btn {
-            margin-top: 20px;
-            background-color: #FF5733;
-            color: white;
-            font-size: 18px;
-            padding: 10px 20px;
+        .spin-button {
+            padding: 20px 40px;
+            margin-top: 30px;
+            background-color: #ffcc00;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
+            color: #333;
+            font-size: 1.5em;
             cursor: pointer;
+            transition: 0.3s ease;
         }
 
-        .spin-btn:hover {
-            background-color: #ff4500;
+        .spin-button:hover {
+            background-color: #ff9900;
+        }
+
+        /* Стрелочка для указания выигрыша */
+        .arrow {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: #ffcc00;
+        }
+
+        /* Стили для анимации стрелочки */
+        @keyframes bounce {
+            0% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+            100% { transform: translateX(-50%) translateY(0); }
+        }
+
+        .arrow-bounce {
+            animation: bounce 1s infinite;
         }
     </style>
 </head>
 <body>
-    <div>
+    <div class="container">
+        <h1>🎰 Рулетка Призов</h1>
         <div class="roulette-container">
             <div class="roulette">
                 <div class="gift">🎁 Подарок 1</div>
@@ -73,21 +111,56 @@
                 <div class="gift">💎 Подарок 7</div>
                 <div class="gift">🎁 Подарок 8</div>
             </div>
+            <div class="arrow" id="arrow">↑</div>
         </div>
-        <button class="spin-btn" id="spinBtn">Крутить рулетку</button>
+        <button class="spin-button" onclick="spinRoulette()">Крутить Рулетку</button>
     </div>
 
     <script>
-        const spinButton = document.getElementById('spinBtn');
-        const roulette = document.querySelector('.roulette');
+        let spinning = false;
+        let arrow = document.getElementById('arrow');
+        let lastIndex = -1; // Индекс последнего выигранного подарка
 
-        spinButton.addEventListener('click', function() {
+        function spinRoulette() {
+            if (spinning) return;
+            spinning = true;
+
+            // Скрываем стрелочку до начала анимации
+            arrow.style.display = 'none';
+
             // Генерируем случайную позицию для прокрутки
-            const randomPosition = Math.floor(Math.random() * 4) * 200; // генерируем случайный сдвиг
+            const randomPosition = Math.floor(Math.random() * 4) * 200; // случайный сдвиг
 
-            // Добавляем класс для анимации прокрутки
-            roulette.style.transform = `translateX(-${randomPosition}px)`;
-        });
+            // Начинаем анимацию сдвига рулетки
+            document.querySelector('.roulette').style.transition = 'transform 2s ease-in-out';
+            document.querySelector('.roulette').style.transform = `translateX(-${randomPosition}px)`;
+
+            // Рассчитываем, какой подарок будет в центре
+            lastIndex = (randomPosition / 200) % 8;
+
+            setTimeout(() => {
+                // Показываем стрелочку поверх рулетки на выигравшем подарке
+                arrow.style.display = 'block';
+                arrow.style.left = `${(lastIndex * 200) + 100}px`; // Позиционируем стрелочку
+
+                // Добавляем анимацию для стрелочки
+                arrow.classList.add('arrow-bounce');
+
+                // Выводим сообщение о выигрыше
+                setTimeout(() => {
+                    alert(`Поздравляем! Ты выиграл: ${document.querySelectorAll('.gift')[lastIndex].textContent}`);
+                    spinning = false;
+
+                    // Сброс состояния рулетки
+                    document.querySelector('.roulette').style.transition = 'none';
+                    document.querySelector('.roulette').style.transform = 'translateX(0)';
+                    setTimeout(() => {
+                        document.querySelector('.roulette').style.transition = 'transform 2s ease-in-out';
+                    }, 100);
+                }, 500); // Ждем, чтобы завершилась анимация и только потом показываем результат
+            }, 2000);  // Время, через которое рулетка остановится
+        }
     </script>
 </body>
 </html>
+
