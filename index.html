@@ -46,7 +46,6 @@
             width: max-content;
             height: 100%;
             transition: transform 5s ease-out;
-            animation: spin 5s linear infinite;
         }
 
         .gift {
@@ -84,14 +83,6 @@
             background-color: #ff9900;
         }
 
-        @keyframes spin {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-100%); /* Плавно прокручиваем на длину одного цикла */
-            }
-        }
     </style>
 </head>
 <body>
@@ -99,7 +90,25 @@
         <h1>🎰 Рулетка Призов</h1>
         <div class="roulette-container">
             <div class="roulette">
-                <!-- Вставляем 6 подарков -->
+                <!-- 6 подарков, которые будут крутиться бесконечно -->
+                <div class="gift">🎁 Подарок 1</div>
+                <div class="gift">🎉 Подарок 2</div>
+                <div class="gift">🍫 Подарок 3</div>
+                <div class="gift">🧸 Подарок 4</div>
+                <div class="gift">📱 Подарок 5</div>
+                <div class="gift">🍭 Подарок 6</div>
+                <div class="gift">🎁 Подарок 1</div>
+                <div class="gift">🎉 Подарок 2</div>
+                <div class="gift">🍫 Подарок 3</div>
+                <div class="gift">🧸 Подарок 4</div>
+                <div class="gift">📱 Подарок 5</div>
+                <div class="gift">🍭 Подарок 6</div>
+                <div class="gift">🎁 Подарок 1</div>
+                <div class="gift">🎉 Подарок 2</div>
+                <div class="gift">🍫 Подарок 3</div>
+                <div class="gift">🧸 Подарок 4</div>
+                <div class="gift">📱 Подарок 5</div>
+                <div class="gift">🍭 Подарок 6</div>
                 <div class="gift">🎁 Подарок 1</div>
                 <div class="gift">🎉 Подарок 2</div>
                 <div class="gift">🍫 Подарок 3</div>
@@ -114,7 +123,7 @@
     <script>
         let spinning = false;
         let gifts = document.querySelectorAll('.gift');
-        let winningGiftIndex = 2;  // Заранее определённый выигрышный подарок (например, Подарок 3)
+        let winningGiftIndex = 2;  // Заведомо выбранный выигравший подарок (например, Подарок 3)
 
         function spinRoulette() {
             if (spinning) return;  // Если рулетка уже крутится, не начинать снова
@@ -123,8 +132,8 @@
             // Убираем подсветку с предыдущего подарка
             gifts.forEach(gift => gift.classList.remove('active'));
 
-            // Обновляем анимацию
-            let randomRotation = Math.floor(Math.random() * 6) + 6; // Делаем рулетку прокрутиться несколько раз случайным числом
+            // Обновляем анимацию с быстрой прокруткой и плавным остановом
+            let randomRotation = Math.floor(Math.random() * 6) + 6;  // Сколько раз крутится рулетка
             let rotationDegree = randomRotation * 100;  // Поворачиваем на несколько "подарков"
 
             // Вращаем рулетку
@@ -134,8 +143,8 @@
             setTimeout(() => {
                 // После завершения анимации, подсвечиваем выигравший подарок
                 let actualWinningGiftIndex = winningGiftIndex + (randomRotation % 6);
-                if (actualWinningGiftIndex >= 6) {
-                    actualWinningGiftIndex = actualWinningGiftIndex - 6;  // Переводим индекс в допустимый диапазон
+                if (actualWinningGiftIndex >= 12) {
+                    actualWinningGiftIndex = actualWinningGiftIndex - 12;  // Переводим индекс в допустимый диапазон
                 }
 
                 gifts[actualWinningGiftIndex].classList.add('active');  // Подсвечиваем победивший подарок
