@@ -81,22 +81,12 @@
 
         .arrow {
             position: absolute;
-            top: -30px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             font-size: 2em;
             color: #ffcc00;
-            display: none; /* Стрелочка скрыта изначально */
-        }
-
-        @keyframes bounce {
-            0% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-            100% { transform: translateX(-50%) translateY(0); }
-        }
-
-        .arrow-bounce {
-            animation: bounce 1s infinite;
+            z-index: 10;
         }
 
     </style>
@@ -152,14 +142,14 @@
     <script>
         let spinning = false;
         let arrow = document.getElementById('arrow');
-        let lastIndex = -1; // Индекс последнего выигранного подарка
+        let lastIndex = -1; // Индекс последнего выигравшего подарка
 
         function spinRoulette() {
             if (spinning) return;
             spinning = true;
 
-            // Скрываем стрелочку до начала анимации
-            arrow.style.display = 'none';
+            // Стрелочка всегда в центре
+            arrow.style.display = 'block';
 
             // Генерируем случайное количество прокруток, чтобы имитировать длительную прокрутку
             const spins = Math.floor(Math.random() * 8) + 3; // Прокрутка от 3 до 10 циклов
@@ -174,11 +164,7 @@
 
             setTimeout(() => {
                 // Показываем стрелочку поверх рулетки на выигравшем подарке
-                arrow.style.display = 'block';
                 arrow.style.left = `${(lastIndex * 100) + 50}px`; // Позиционируем стрелочку по центру
-
-                // Добавляем анимацию для стрелочки
-                arrow.classList.add('arrow-bounce');
 
                 // Выводим сообщение о выигрыше
                 setTimeout(() => {
