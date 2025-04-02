@@ -3,101 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎰 Рулетка Призов</title>
+    <title>🎰 Рулетка подарков 🎁</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2b2b2b;
-            color: #fff;
+            background-color: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            flex-direction: column;
         }
-
-        .container {
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            font-weight: bold;
-            color: #ffcc00;
-        }
-
-        .roulette {
-            width: 200px;
-            height: 200px;
-            background: #333;
+        .wheel-container {
+            width: 300px;
+            height: 300px;
             border-radius: 50%;
-            border: 5px solid #ffcc00;
+            border: 10px solid #FF5733;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .wheel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2em;
-            color: #fff;
-            box-shadow: 0 0 20px rgba(255, 204, 0, 0.7);
-            animation: rotate 4s infinite linear;
+            transform-origin: center center;
+            transition: transform 3s ease-out;
         }
-
-        .roulette-text {
-            position: absolute;
-            color: #ffcc00;
-            font-weight: bold;
-        }
-
-        .spin-button {
-            padding: 20px 40px;
-            margin-top: 30px;
+        .gift {
+            width: 80px;
+            height: 80px;
             background-color: #ffcc00;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            font-size: 16px;
+            position: absolute;
+        }
+        .spin-btn {
+            margin-top: 20px;
+            background-color: #FF5733;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 25px;
-            color: #333;
-            font-size: 1.5em;
+            border-radius: 5px;
             cursor: pointer;
-            transition: 0.3s ease;
         }
-
-        .spin-button:hover {
-            background-color: #ff9900;
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+        .spin-btn:hover {
+            background-color: #ff4500;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎰 Рулетка Призов</h1>
-        <div class="roulette">
-            <div class="roulette-text">🎉</div>
+    <div class="wheel-container">
+        <div class="wheel">
+            <div class="gift" style="transform: rotate(0deg);">🎁 Подарок 1</div>
+            <div class="gift" style="transform: rotate(45deg);">🎉 Подарок 2</div>
+            <div class="gift" style="transform: rotate(90deg);">🍫 Подарок 3</div>
+            <div class="gift" style="transform: rotate(135deg);">🧸 Подарок 4</div>
+            <div class="gift" style="transform: rotate(180deg);">📱 Подарок 5</div>
+            <div class="gift" style="transform: rotate(225deg);">🍭 Подарок 6</div>
+            <div class="gift" style="transform: rotate(270deg);">💎 Подарок 7</div>
+            <div class="gift" style="transform: rotate(315deg);">🎁 Подарок 8</div>
         </div>
-        <button class="spin-button" onclick="spinRoulette()">Крутить Рулетку</button>
     </div>
+    <button class="spin-btn" id="spinBtn">Крутить рулетку</button>
 
     <script>
-        let spinning = false;
-
-        function spinRoulette() {
-            if (spinning) return;
-            spinning = true;
-            document.querySelector('.roulette').style.animation = 'rotate 4s infinite linear';
+        document.getElementById("spinBtn").addEventListener("click", function() {
+            const wheel = document.querySelector(".wheel");
+            const randomDeg = Math.floor(Math.random() * 360) + 3600;  // random degree (at least 10 full turns)
+            wheel.style.transform = `rotate(${randomDeg}deg)`;  // Apply rotation
 
             setTimeout(() => {
-                alert('Поздравляем, ты выиграл!');
-                spinning = false;
-                document.querySelector('.roulette').style.animation = 'none';
-            }, 4000);  // Время, через которое рулетка остановится
-        }
+                const prizeIndex = Math.floor(randomDeg / 45) % 8;  // Determine which prize
+                const prizes = [
+                    "🎁 Подарок 1",
+                    "🎉 Подарок 2",
+                    "🍫 Подарок 3",
+                    "🧸 Подарок 4",
+                    "📱 Подарок 5",
+                    "🍭 Подарок 6",
+                    "💎 Подарок 7",
+                    "🎁 Подарок 8"
+                ];
+                alert("Поздравляем! Вы выиграли: " + prizes[prizeIndex]);
+            }, 3500);  // Wait for animation to finish
+        });
     </script>
 </body>
 </html>
