@@ -14,7 +14,6 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            flex-direction: column;
             overflow: hidden;
         }
 
@@ -50,7 +49,7 @@
         }
 
         .gift {
-            width: 100px; /* Элемент рулетки фиксированной ширины */
+            width: 100px;
             height: 100%;
             background-color: #ff5733;
             color: white;
@@ -61,6 +60,11 @@
             border-radius: 10px;
             margin-right: 20px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .gift.active {
+            background-color: #ffcc00;
         }
 
         .spin-button {
@@ -78,17 +82,6 @@
         .spin-button:hover {
             background-color: #ff9900;
         }
-
-        .arrow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2em;
-            color: #ffcc00;
-            z-index: 10;
-        }
-
     </style>
 </head>
 <body>
@@ -96,90 +89,59 @@
         <h1>🎰 Рулетка Призов</h1>
         <div class="roulette-container">
             <div class="roulette">
-                <!-- Вставляем 36 подарков для эффекта множества -->
+                <!-- Вставляем 6 подарков -->
                 <div class="gift">🎁 Подарок 1</div>
                 <div class="gift">🎉 Подарок 2</div>
                 <div class="gift">🍫 Подарок 3</div>
                 <div class="gift">🧸 Подарок 4</div>
                 <div class="gift">📱 Подарок 5</div>
                 <div class="gift">🍭 Подарок 6</div>
-                <div class="gift">💎 Подарок 7</div>
-                <div class="gift">🎁 Подарок 8</div>
-                <div class="gift">🎉 Подарок 9</div>
-                <div class="gift">🍫 Подарок 10</div>
-                <div class="gift">🧸 Подарок 11</div>
-                <div class="gift">📱 Подарок 12</div>
-                <div class="gift">🍭 Подарок 13</div>
-                <div class="gift">💎 Подарок 14</div>
-                <div class="gift">🎁 Подарок 15</div>
-                <div class="gift">🎉 Подарок 16</div>
-                <div class="gift">🍫 Подарок 17</div>
-                <div class="gift">🧸 Подарок 18</div>
-                <div class="gift">📱 Подарок 19</div>
-                <div class="gift">🍭 Подарок 20</div>
-                <div class="gift">💎 Подарок 21</div>
-                <div class="gift">🎁 Подарок 22</div>
-                <div class="gift">🎉 Подарок 23</div>
-                <div class="gift">🍫 Подарок 24</div>
-                <div class="gift">🧸 Подарок 25</div>
-                <div class="gift">📱 Подарок 26</div>
-                <div class="gift">🍭 Подарок 27</div>
-                <div class="gift">💎 Подарок 28</div>
-                <div class="gift">🎁 Подарок 29</div>
-                <div class="gift">🎉 Подарок 30</div>
-                <div class="gift">🍫 Подарок 31</div>
-                <div class="gift">🧸 Подарок 32</div>
-                <div class="gift">📱 Подарок 33</div>
-                <div class="gift">🍭 Подарок 34</div>
-                <div class="gift">💎 Подарок 35</div>
-                <div class="gift">🎁 Подарок 36</div>
             </div>
-            <div class="arrow" id="arrow">↑</div>
         </div>
         <button class="spin-button" onclick="spinRoulette()">Крутить Рулетку</button>
     </div>
 
     <script>
         let spinning = false;
-        let arrow = document.getElementById('arrow');
-        let lastIndex = -1; // Индекс последнего выигравшего подарка
+        let gifts = document.querySelectorAll('.gift');
+        let currentGiftIndex = 0;
 
         function spinRoulette() {
-            if (spinning) return;
+            if (spinning) return;  // Если рулетка уже крутится, не начинать снова
             spinning = true;
 
-            // Стрелочка всегда в центре
-            arrow.style.display = 'block';
+            // Убираем подсветку с предыдущего подарка
+            gifts[currentGiftIndex].classList.remove('active');
 
-            // Генерируем случайное количество прокруток, чтобы имитировать длительную прокрутку
-            const spins = Math.floor(Math.random() * 8) + 3; // Прокрутка от 3 до 10 циклов
-            const randomPosition = Math.floor(Math.random() * 36) * 100; // случайный сдвиг (36 элементов)
+            // Вращаем рулетку, двигаем по горизонтали
+            let spins = Math.floor(Math.random() * 10) + 5;  // Количество прокруток (случайное)
+            let randomOffset = Math.floor(Math.random() * 6);  // Окончательная позиция (случайная)
 
-            // Начинаем анимацию прокрутки рулетки
-            document.querySelector('.roulette').style.transition = 'transform 3s ease-in-out';
-            document.querySelector('.roulette').style.transform = `translateX(-${randomPosition + (spins * 100)}px)`; // Добавляем дополнительные вращения
-
-            // Рассчитываем, какой подарок будет в центре
-            lastIndex = (randomPosition / 100) % 36; // Индекс выигравшего подарка
+            // Применяем анимацию
+            document.querySelector('.roulette').style.transition = 'transform 5s ease-out';
+            document.querySelector('.roulette').style.transform = `translateX(-${(spins * 100) + randomOffset * 100}px)`;
 
             setTimeout(() => {
-                // Показываем стрелочку поверх рулетки на выигравшем подарке
-                arrow.style.left = `${(lastIndex * 100) + 50}px`; // Позиционируем стрелочку по центру
+                // После завершения анимации определяем, какой подарок в центре
+                let newGiftIndex = Math.floor(randomOffset + (spins * 100) / 100) % 6;
+                currentGiftIndex = newGiftIndex;
+
+                // Подсвечиваем выигравший подарок
+                gifts[currentGiftIndex].classList.add('active');
 
                 // Выводим сообщение о выигрыше
                 setTimeout(() => {
-                    alert(`Поздравляем! Ты выиграл: ${document.querySelectorAll('.gift')[lastIndex].textContent}`);
+                    alert(`Поздравляем! Ты выиграл: ${gifts[currentGiftIndex].textContent}`);
                     spinning = false;
-
-                    // Сброс состояния рулетки
-                    document.querySelector('.roulette').style.transition = 'none';
-                    document.querySelector('.roulette').style.transform = 'translateX(0)';
+                    document.querySelector('.roulette').style.transition = 'none';  // Останавливаем анимацию
+                    document.querySelector('.roulette').style.transform = 'translateX(0)'; // Сбрасываем позицию рулетки
                     setTimeout(() => {
-                        document.querySelector('.roulette').style.transition = 'transform 3s ease-in-out';
+                        document.querySelector('.roulette').style.transition = 'transform 5s ease-out'; // Восстанавливаем анимацию
                     }, 100);
-                }, 500); // Ждем, чтобы завершилась анимация и только потом показываем результат
-            }, 3000);  // Время, через которое рулетка остановится
+                }, 500);  // Задержка перед выводом сообщения
+            }, 5000);  // Время, через которое рулетка остановится
         }
     </script>
 </body>
 </html>
+
