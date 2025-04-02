@@ -43,9 +43,9 @@
 
         .roulette {
             display: flex;
-            width: 100%;
+            width: max-content;
             height: 100%;
-            transition: transform 3s ease-in-out;
+            transition: transform 5s ease-out;
         }
 
         .gift {
@@ -104,34 +104,29 @@
     <script>
         let spinning = false;
         let gifts = document.querySelectorAll('.gift');
-        let currentGiftIndex = 0;
+        let winningGiftIndex = 2;  // Заранее определённый выигрышный подарок (например, Подарок 3)
 
         function spinRoulette() {
             if (spinning) return;  // Если рулетка уже крутится, не начинать снова
             spinning = true;
 
             // Убираем подсветку с предыдущего подарка
-            gifts[currentGiftIndex].classList.remove('active');
+            gifts.forEach(gift => gift.classList.remove('active'));
 
             // Вращаем рулетку, двигаем по горизонтали
-            let spins = Math.floor(Math.random() * 10) + 5;  // Количество прокруток (случайное)
-            let randomOffset = Math.floor(Math.random() * 6);  // Окончательная позиция (случайная)
+            let spins = Math.floor(Math.random() * 5) + 5;  // Количество прокруток (случайное)
 
             // Применяем анимацию
             document.querySelector('.roulette').style.transition = 'transform 5s ease-out';
-            document.querySelector('.roulette').style.transform = `translateX(-${(spins * 100) + randomOffset * 100}px)`;
+            document.querySelector('.roulette').style.transform = `translateX(-${spins * 100}px)`;
 
             setTimeout(() => {
-                // После завершения анимации определяем, какой подарок в центре
-                let newGiftIndex = Math.floor(randomOffset + (spins * 100) / 100) % 6;
-                currentGiftIndex = newGiftIndex;
-
-                // Подсвечиваем выигравший подарок
-                gifts[currentGiftIndex].classList.add('active');
+                // После завершения анимации, подсвечиваем выигравший подарок
+                gifts[winningGiftIndex].classList.add('active');
 
                 // Выводим сообщение о выигрыше
                 setTimeout(() => {
-                    alert(`Поздравляем! Ты выиграл: ${gifts[currentGiftIndex].textContent}`);
+                    alert(`Поздравляем! Ты выиграл: ${gifts[winningGiftIndex].textContent}`);
                     spinning = false;
                     document.querySelector('.roulette').style.transition = 'none';  // Останавливаем анимацию
                     document.querySelector('.roulette').style.transform = 'translateX(0)'; // Сбрасываем позицию рулетки
