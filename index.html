@@ -165,8 +165,8 @@
             gifts.forEach(gift => gift.classList.remove('active'));
 
             // Рассчитываем сколько полных оборотов нужно
-            let rotations = 3; // Сколько полных оборотов нужно сделать до остановки
-            let rotationDegree = (rotations * totalGifts + winningGiftIndex) * 100;  // Поворачиваем на несколько "подарков"
+            let rotations = 2; // Сколько полных оборотов нужно сделать до остановки
+            let rotationDegree = (rotations * totalGifts + winningGiftIndex) * 50;  // Поворачиваем на несколько "подарков"
             
             // Устанавливаем начало анимации
             document.querySelector('.roulette').style.transition = 'transform 3s ease-out';
