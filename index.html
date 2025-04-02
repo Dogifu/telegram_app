@@ -45,7 +45,7 @@
             display: flex;
             width: max-content;
             height: 100%;
-            transition: transform 5s ease-out;
+            transition: transform 3s ease-out; /* Ускорили анимацию */
         }
 
         .gift {
@@ -137,7 +137,7 @@
             let rotationDegree = randomRotation * 100;  // Поворачиваем на несколько "подарков"
 
             // Вращаем рулетку
-            document.querySelector('.roulette').style.transition = 'transform 5s ease-out';
+            document.querySelector('.roulette').style.transition = 'transform 3s ease-out';
             document.querySelector('.roulette').style.transform = `translateX(-${rotationDegree}px)`;
 
             setTimeout(() => {
@@ -147,6 +147,17 @@
                     actualWinningGiftIndex = actualWinningGiftIndex - 12;  // Переводим индекс в допустимый диапазон
                 }
 
+                // Убедимся, что мы видим выигравший подарок
+                let offsetX = actualWinningGiftIndex * (gifts[0].offsetWidth + 20);  // Рассчитываем смещение
+                document.querySelector('.roulette').style.transition = 'none';  // Убираем плавность для перемещения
+                document.querySelector('.roulette').style.transform = `translateX(-${offsetX}px)`;  // Перемещаем рулетку так, чтобы выигравший подарок был в центре
+
+                // Теперь снова включаем плавную анимацию
+                setTimeout(() => {
+                    document.querySelector('.roulette').style.transition = 'transform 3s ease-out'; 
+                }, 100);
+
+                // Подсвечиваем победивший подарок
                 gifts[actualWinningGiftIndex].classList.add('active');  // Подсвечиваем победивший подарок
 
                 // Выводим сообщение о выигрыше
@@ -156,12 +167,11 @@
                     document.querySelector('.roulette').style.transition = 'none';  // Останавливаем анимацию
                     document.querySelector('.roulette').style.transform = 'translateX(0)'; // Сбрасываем позицию рулетки
                     setTimeout(() => {
-                        document.querySelector('.roulette').style.transition = 'transform 5s ease-out'; // Восстанавливаем анимацию
+                        document.querySelector('.roulette').style.transition = 'transform 3s ease-out'; // Восстанавливаем анимацию
                     }, 100);
                 }, 500);  // Задержка перед выводом сообщения
-            }, 5000);  // Время, через которое рулетка остановится
+            }, 3000);  // Время, через которое рулетка остановится
         }
     </script>
 </body>
 </html>
-
